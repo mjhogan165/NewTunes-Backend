@@ -6,6 +6,37 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int    @id @default(autoincrement())
+  username String 
+  password String?
+  email    String?
+  profileImg String?
+  sentRequests FriendRequest[]  @relation("sentRequests")
+  receivedRequests FriendRequest[]  @relation("receivedRequests")
+  createdBy NewTune[] @relation("createdBy")
+}
+
+model FriendRequest {
+  id Int @id @default(autoincrement())
+  sender User @relation("sentRequests", fields: [senderId], references: [id], onDelete: Cascade)
+  senderId Int
+  receiver User  @relation("receivedRequests", fields: [receiverId], references: [id], onDelete: Cascade)
+  receiverId Int
+  status String
+}
+
+model NewTune {
+  id Int @id @default(autoincrement())
+  artist String
+  title String
+  img String?
+  createdBy User @relation("createdBy", fields: [createdById], references: [id], onDelete: Cascade)
+  createdById Int
+  comment String?
+  tagged String?
 }
