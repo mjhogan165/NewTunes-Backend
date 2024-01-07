@@ -13,12 +13,13 @@ datasource db {
 model User {
   id          Int    @id @default(autoincrement())
   username String 
-  password String
+  password String?
   email    String?
   profileImg String?
   sentRequests FriendRequest[]  @relation("sentRequests")
   receivedRequests FriendRequest[]  @relation("receivedRequests")
   createdBy NewTune[] @relation("createdBy")
+  taggedIn NewTune[]
 }
 
 model FriendRequest {
@@ -28,7 +29,17 @@ model FriendRequest {
   receiver User  @relation("receivedRequests", fields: [receiverId], references: [id], onDelete: Cascade)
   receiverId Int
   status String
+  @@unique([senderId, receiverId])
 }
+
+// model AcceptedFriend {
+//   id  Int @id @default(autoincrement())
+//   friends User[] @relation("friends", fields: [friendOneId], references: [id])
+//   friendOneId Int 
+//   friendTwo User @relation("friends", fields: [friendTwoId], references: [id])
+//   friendTwoId Int
+// }
+
 
 model NewTune {
   id Int @id @default(autoincrement())
@@ -38,5 +49,8 @@ model NewTune {
   createdBy User @relation("createdBy", fields: [createdById], references: [id], onDelete: Cascade)
   createdById Int
   comment String?
-  tagged String?
+  tagged User[]
+  // tagged User[]  @relation("tagged", fields: [taggedId], references: [taggedIn])
+  // taggedId Int @default(0)
+  // tagged User @relation(references: [taggedIn])
 }
