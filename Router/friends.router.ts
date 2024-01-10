@@ -3,7 +3,6 @@ import { prisma } from "../prisma/prisma-instance";
 import { z } from "zod";
 
 const friendsController = Router();
-console.log("ddd");
 friendsController.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
