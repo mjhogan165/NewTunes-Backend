@@ -17,18 +17,26 @@ import { profile } from "console";
 userController.get("/users", async (req, res) => {
   const users = await prisma.user.findMany();
   // const parsedData = usersArraySchema.parse(users);
-  console.log(users);
+  console.log({ getUsers: users });
   res.status(200).send(users);
   console.log("got");
 });
-userController.post("/userByName", async (req, res) => {
-  const taggedUser = await prisma.user.findFirst({
-    where: {
-      username: req.body.username,
-    },
-  });
-  if (taggedUser) {
-    return res.status(200).send(taggedUser);
+userController.post("/userIdsByName", async (req, res) => {
+  const taggedUserIds: number[] = [];
+  console.log(req.body);
+  for (const username of req.body.usernames) {
+    const user = await prisma.user.findFirst({
+      where: {
+        username: username,
+      },
+    });
+    if (user) {
+      taggedUserIds.push(user.id);
+    }
+  }
+
+  if (taggedUserIds) {
+    return res.status(200).send(taggedUserIds);
   }
 });
 //create user

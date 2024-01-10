@@ -73,34 +73,38 @@ newTunesController.get("/newTune/:id", async (req, res) => {
 newTunesController.post("/newTune", async (req, res) => {
   console.log("post newTune");
   console.log({ backEndreq: req.body });
-  // const newTune = await prisma.newTune.create({
-  //   data: {
-  // artist: req.body.artist,
-  // title: req.body.title,
-  // img: req.body.img,
-  // comment: req.body.comment,
-  // createdById: req.body.createdById,
-  //     //createdBy: req.body.createdBy,
-  //     // tagged: { create : taggedUsers },
-  //   },
-  // });
-  // for (const userId of req.body.taggedUserIds) {
-  //   const tagged = await prisma.newTune.update({
-  //     where: {
-  //       id: newTune.id,
-  //     },
-  //     data: {
-  //       tagged: { connect: { id: userId } },
-  //     },
-  //   });
-  // }
-  const newTune = await createTuneWithTagged(req.body.taggedUserIds, {
-    artist: req.body.artist,
-    title: req.body.title,
-    img: req.body.img,
-    comment: req.body.comment,
-    createdById: req.body.createdById,
+  const taggedIds: [] = [];
+  taggedIds.push();
+  const newTune = await prisma.newTune.create({
+    data: {
+      artist: req.body.artist,
+      title: req.body.title,
+      img: req.body.img,
+      comment: req.body.comment,
+      createdById: req.body.createdById,
+      //createdBy: req.body.createdBy,
+      // tagged: { create : taggedUsers },
+    },
   });
+  for (const userId of req.body.taggedUserIds) {
+    const tagged = await prisma.newTune.update({
+      where: {
+        id: newTune.id,
+      },
+      data: {
+        tagged: { connect: { id: userId } },
+        createdBy: { connect: { id: req.body.createdById } },
+      },
+    });
+  }
+
+  // const newTune = await createTuneWithTagged(taggedIds, {
+  //   artist: req.body.artist,
+  //   title: req.body.title,
+  //   img: req.body.img,
+  //   comment: req.body.comment,
+  //   createdById: req.body.createdBy.id,
+  // });
   return res.status(200).send(newTune);
 });
 newTunesController.post("/newTune/byUser", async (req, res) => {});

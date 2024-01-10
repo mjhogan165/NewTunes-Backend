@@ -56,6 +56,12 @@ export async function seedUsers() {
     profileImg: faker.image.avatar(),
     username: "goforbilly",
   });
+  const noFriends = await createUser({
+    email: "nopfriends@friendly.com",
+    password: "nobody",
+    profileImg: faker.image.avatar(),
+    username: "noFriends",
+  });
 
   const mattAndJonFriendship = await createFriendship(
     jon.id,
@@ -100,28 +106,28 @@ export async function seedUsers() {
   createTuneWithTagged([bob.id, lauren.id], {
     artist: "singerman",
     title: "titleman",
-    img: "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/509.jpg",
+    img: faker.image.avatar(),
     createdById: jon.id,
     comment: "I like songs",
   });
   createTuneWithTagged([jon.id, lauren.id], {
     artist: "bob bob man",
     title: "title are fun ",
-    img: "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/509.jpg",
+    img: faker.image.avatar(),
     createdById: bob.id,
     comment: "you suck",
   });
   createTuneWithTagged([matt.id, jon.id], {
     artist: "song man writer",
     title: "TITLES ",
-    img: "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/509.jpg",
+    img: faker.image.avatar(),
     createdById: bob.id,
     comment: "I like songs",
   });
   createTuneWithTagged([matt.id, bob.id], {
     artist: "THE PERFECT ARTIST",
     title: "i hate titles",
-    img: "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/509.jpg",
+    img: faker.image.avatar(),
     createdById: lauren.id,
     comment: "check itttttt",
   });

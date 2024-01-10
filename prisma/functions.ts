@@ -217,7 +217,7 @@ export const createTuneWithTagged = async (
   taggedIds: number[],
   tuneData: Omit<NewTune, "id">
 ) => {
-  console.log({ input: tuneData });
+  console.log({ input: tuneData, ids: taggedIds });
   const newTune = await prisma.newTune.create({
     data: {
       artist: tuneData.artist,

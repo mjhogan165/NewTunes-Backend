@@ -38,7 +38,7 @@ friendsController.post("/friendRequest/create", async (req, res) => {
     status: z.string(),
   });
   const parse = newFriend.parse(req.body);
-  console.log(parse);
+  console.log({ newFriend: parse });
   // const body = req.body;
 
   const friendRequest = await prisma.friendRequest.create({
