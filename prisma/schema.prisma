@@ -32,15 +32,6 @@ model FriendRequest {
   @@unique([senderId, receiverId])
 }
 
-// model AcceptedFriend {
-//   id  Int @id @default(autoincrement())
-//   friends User[] @relation("friends", fields: [friendOneId], references: [id])
-//   friendOneId Int 
-//   friendTwo User @relation("friends", fields: [friendTwoId], references: [id])
-//   friendTwoId Int
-// }
-
-
 model NewTune {
   id Int @id @default(autoincrement())
   artist String
@@ -50,7 +41,4 @@ model NewTune {
   createdById Int
   comment String?
   tagged User[]
-  // tagged User[]  @relation("tagged", fields: [taggedId], references: [taggedIn])
-  // taggedId Int @default(0)
-  // tagged User @relation(references: [taggedIn])
 }

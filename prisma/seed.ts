@@ -1,66 +1,55 @@
 import { prisma } from "./prisma-instance";
 import { clearDb } from "./clearDb";
 import {
-  createFriends,
-  generateTunes,
-  addUsersToDb,
   createUser,
   createFriendship,
-  createTune,
   createTuneWithTagged,
 } from "./functions";
 import { faker } from "@faker-js/faker";
-//import { createTuneWithUsers } from "./models/tune";
 
 export async function seedUsers() {
   await clearDb();
-
-  // const generatedUsers = await generateUsers(30);
-
-  //const createdUsers = await addUsersToDb(generatedUsers);
-  // const tunes = await createTunes(createdUsers);
-  //const acceptedFriends = await createFriends(createdUsers);
   const jon = await createUser({
     email: "jon@jon.com",
-    password: "billybob",
+    password: "jonpass",
     profileImg: faker.image.avatar(),
     username: "jjhiggz",
   });
   const matt = await createUser({
     email: "matt@matt.com",
-    password: "mattymatt",
+    password: "mattpass",
     profileImg: faker.image.avatar(),
     username: "iammatt",
   });
-  const lauren = await createUser({
-    email: "Luaren@luaren.com",
-    password: "laurenpass",
+  const sally = await createUser({
+    email: "sally@gosallygo.com",
+    password: "sallypass",
     profileImg: faker.image.avatar(),
-    username: "laurenname",
+    username: "iamsally",
   });
   const bob = await createUser({
     email: "bob@bobbob.com",
-    password: "bobiscool",
+    password: "bobpass",
     profileImg: faker.image.avatar(),
     username: "iambob",
   });
   const steve = await createUser({
     email: "steve@email",
-    password: "StevieBOI",
+    password: "stevepass",
     profileImg: faker.image.avatar(),
     username: "iamsteve",
   });
   const billy = await createUser({
     email: "billyyboi@billy.com",
-    password: "bigbilly",
+    password: "billypass",
     profileImg: faker.image.avatar(),
-    username: "goforbilly",
+    username: "iambilly",
   });
-  const noFriends = await createUser({
-    email: "nopfriends@friendly.com",
-    password: "nobody",
+  const friendMe = await createUser({
+    email: "friendme@friendly.com",
+    password: "friendMepass",
     profileImg: faker.image.avatar(),
-    username: "noFriends",
+    username: "iamfriendMe",
   });
 
   const mattAndJonFriendship = await createFriendship(
@@ -73,8 +62,8 @@ export async function seedUsers() {
     matt.id,
     "accepted"
   );
-  const mattAndLaurenFriendship = await createFriendship(
-    lauren.id,
+  const mattAndsallyFriendship = await createFriendship(
+    sally.id,
     matt.id,
     "pending"
   );
@@ -88,13 +77,13 @@ export async function seedUsers() {
     matt.id,
     "rejected"
   );
-  const laurenAndJonFriendship = await createFriendship(
-    lauren.id,
+  const sallyAndJonFriendship = await createFriendship(
+    sally.id,
     jon.id,
     "accepted"
   );
-  const laurenAndBobFriendship = await createFriendship(
-    lauren.id,
+  const sallyAndBobFriendship = await createFriendship(
+    sally.id,
     bob.id,
     "rejected"
   );
@@ -103,14 +92,14 @@ export async function seedUsers() {
     jon.id,
     "accepted"
   );
-  createTuneWithTagged([bob.id, lauren.id], {
+  createTuneWithTagged([bob.id, sally.id], {
     artist: "singerman",
     title: "titleman",
     img: faker.image.avatar(),
     createdById: jon.id,
     comment: "I like songs",
   });
-  createTuneWithTagged([jon.id, lauren.id], {
+  createTuneWithTagged([jon.id, sally.id], {
     artist: "bob bob man",
     title: "title are fun ",
     img: faker.image.avatar(),
@@ -128,18 +117,7 @@ export async function seedUsers() {
     artist: "THE PERFECT ARTIST",
     title: "i hate titles",
     img: faker.image.avatar(),
-    createdById: lauren.id,
+    createdById: sally.id,
     comment: "check itttttt",
   });
-  // const tune1 = createTuneWithUsers(
-  //   {
-  //     artist: "johnBoi",
-  //     title: "best artist",
-  //     comment: " kldfjolsdfj",
-  //     createdById: matt.id,
-  //     img: faker.image.avatar(),
-  //   },
-  //   [jon.id, matt.id]
-  // );
-  //const mattTuneOne = await createTune("goodartist", "SongTitle", null, "comments are cool", 1353 )
 }

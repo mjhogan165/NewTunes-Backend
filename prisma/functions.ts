@@ -82,7 +82,6 @@ export const createTune = async (
 };
 
 export const addUsersToDb = async (arr: any) => {
-  // console.log({ addUsersToDb: arr });
   let users = [];
   for (let i = 0; i < arr.length; i++) {
     const user = arr[i];
@@ -217,7 +216,6 @@ export const createTuneWithTagged = async (
   taggedIds: number[],
   tuneData: Omit<NewTune, "id">
 ) => {
-  console.log({ input: tuneData, ids: taggedIds });
   const newTune = await prisma.newTune.create({
     data: {
       artist: tuneData.artist,
@@ -225,14 +223,8 @@ export const createTuneWithTagged = async (
       img: tuneData.img,
       comment: tuneData.comment,
       createdById: tuneData.createdById,
-      //createdBy: req.body.createdBy,
-      // tagged: { create : taggedUsers },
     },
   });
-  // const awaiting = await console.log({
-  //   newTuneid: newTune.id,
-  //   createdById: req.body.createdById,
-  // });
   for (const taggedId of taggedIds) {
     await prisma.newTune.update({
       where: {

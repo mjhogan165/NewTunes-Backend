@@ -1,29 +1,22 @@
 import { Router } from "express";
 import { prisma } from "../prisma/prisma-instance";
-import { Express } from "express";
 import bcrypt from "bcrypt";
-import { z } from "zod";
-const userController = Router();
 import { createUser } from "../prisma/functions";
-import { profile } from "console";
 
-// const userSchema = z.object({
-//   username: z.string(),
-//   password: z.string(),
-//   email: z.string(),
-// });
-// const usersArraySchema = z.array(userSchema);
-
+const userController = Router();
 userController.get("/users", async (req, res) => {
-  const users = await prisma.user.findMany();
-  // const parsedData = usersArraySchema.parse(users);
-  console.log({ getUsers: users });
+  const users = await prisma.user.findMany({
+    select: {
+      email: true,
+      id: true,
+      profileImg: true,
+      username: true,
+    },
+  });
   res.status(200).send(users);
-  console.log("got");
 });
 userController.post("/userIdsByName", async (req, res) => {
   const taggedUserIds: number[] = [];
-  console.log(req.body);
   for (const username of req.body.usernames) {
     const user = await prisma.user.findFirst({
       where: {
@@ -39,10 +32,7 @@ userController.post("/userIdsByName", async (req, res) => {
     return res.status(200).send(taggedUserIds);
   }
 });
-//create user
-
 userController.post("/user/create", async (req, res) => {
-  console.log({ body: req.body });
   const { username, email, profileImg, password } = req.body;
 
   createUser({
@@ -61,10 +51,8 @@ userController.post("/user/create", async (req, res) => {
     });
 });
 
-//login
 userController.post("/user/login", async (req, res) => {
   const username = req.body.username;
-  console.log({ body: req.body });
   const user = await prisma.user.findFirst({
     where: {
       username: username,
@@ -82,15 +70,7 @@ userController.post("/user/login", async (req, res) => {
 });
 
 userController.post("/user/acceptedfriends", async (req, res) => {
-  const friendrequestresult = z.object({
-    id: z.number(),
-    status: z.string(),
-  });
-  // // const id = +req.params.id;
   const { status, id } = req.body;
-  // friendrequestresult.parse(req.body);
-  // console.log({ body: req.body });
-  console.log(req.body);
   const requestObject = await prisma.user.findUnique({
     where: {
       id: id,
@@ -105,17 +85,8 @@ userController.post("/user/acceptedfriends", async (req, res) => {
 });
 
 userController.post("/user/all", async (req, res) => {
-  const friendrequestresult = z.object({
-    id: z.number(),
-    status: z.string(),
-  });
-  // // const id = +req.params.id;
   const { status, id } = req.body;
-  // friendrequestresult.parse(req.body);
-  // console.log({ body: req.body });
-  console.log(req.body);
   const requestObject = await prisma.user.findMany({});
-  console.log(requestObject);
   return res.status(200).send(requestObject);
 });
 
