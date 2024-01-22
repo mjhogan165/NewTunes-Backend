@@ -25,13 +25,19 @@ friendsController.post("/friendRequest/create", async (req, res) => {
     status: z.string(),
   });
   const parse = newFriend.parse(req.body);
-  const friendRequest = await prisma.friendRequest.create({
-    data: {
-      senderId: req.body.senderId,
-      receiverId: req.body.receiverId,
-      status: req.body.status,
-    },
-  });
+  const friendRequest = await prisma.friendRequest
+    .create({
+      data: {
+        senderId: req.body.senderId,
+        receiverId: req.body.receiverId,
+        status: req.body.status,
+      },
+    })
+    .catch((err) => {
+      console.log("errorororororo");
+      console.log(err);
+    });
+  console.log({ friendRequest: friendRequest });
   return res.status(201).send(friendRequest);
 });
 

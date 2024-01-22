@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { prisma } from "../prisma/prisma-instance";
 import { User } from "@prisma/client";
-
+import { authenticateToken } from "./user.router";
 interface NewTuneStructure {
   id?: number;
   artist: string;
@@ -32,8 +32,22 @@ newTunesController.get("/newTune", async (req, res) => {
           profileImg: true,
         },
       },
+      createdBy: true,
     },
   });
+  // .then((res) => {
+  //   console.log({ tunes: res });
+  // });
+
+  // for (const tune of newTunes) {
+  //   const find = await prisma.user.findFirst({
+  //     where: {
+  //       id: tune.createdById,
+  //     },
+  //   }).then((res) => {
+  //     tune.username: res.find
+  //   })
+  // }
   res.status(200).send(newTunes);
 });
 newTunesController.get("/newTune/:id", async (req, res) => {
