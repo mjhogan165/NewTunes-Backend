@@ -84,6 +84,7 @@ export const authenticateToken = (req: any, res: any, next: any) => {
 
 userController.post("/user/login", async (req, res) => {
   const username = req.body.username;
+  console.log({ received: req.body });
   const user = await prisma.user.findFirst({
     where: {
       username: username,
@@ -92,13 +93,14 @@ userController.post("/user/login", async (req, res) => {
   if (!user) {
     return res.status(500).send("user not found");
   }
-
+  //rororo
   const myJwt = jwt.sign(user, secretKey);
-
+  console.log({ myJwt: myJwt });
   if (user.password) {
     const passCheck = await bcrypt.compare(req.body.password, user.password);
+    console.log({ passcheck: passCheck });
     if (passCheck) {
-      return res.status(200).json(myJwt);
+      return res.status(200).send({ user, myJwt });
     } else return res.status(500).send("");
   }
 });
